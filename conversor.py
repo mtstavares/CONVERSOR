@@ -5,11 +5,10 @@ from dotenv import load_dotenv
 import os
 from datetime import datetime
 
-# Carrega variável de ambiente da API
+
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
-# Lista fixa de moedas suportadas no plano gratuito
 moedas = {
     "USD": "Dólar Americano",
     "BRL": "Real Brasileiro",
@@ -22,7 +21,6 @@ moedas = {
     "ARS": "Peso Argentino"
 }
 
-# Função para buscar cotações
 cotacoes = {}
 timestamp = None
 
@@ -43,7 +41,6 @@ def buscar_cotacoes():
     except Exception as e:
         messagebox.showerror("Erro", str(e))
 
-# Função de conversão de moeda
 
 def converter():
     origem = combo_origem.get()
@@ -60,11 +57,10 @@ def converter():
         resultado_var.set("❌ Moeda não suportada.")
         return
 
-    # Conversão: de origem para USD (USD é base)
     valor_convertido = valor / cot_origem
     resultado_var.set(f"{valor:.2f} {origem} = {valor_convertido:.2f} {destino}")
 
-# Interface principal
+# Interface
 buscar_cotacoes()
 
 app = tk.Tk()
@@ -72,34 +68,27 @@ app.title("Conversor de Moedas Moderno")
 app.geometry("600x600")
 app.configure(bg="#f0f2f5")
 
-# Seletor de moeda
 tk.Label(app, text="Moeda de Origem:", bg="#f0f2f5").pack()
 combo_origem = ttk.Combobox(app, values=list(moedas.keys()))
 combo_origem.set("BRL")
 combo_origem.pack()
 
-# Moeda de destino fixa como USD
 tk.Label(app, text="Moeda de Destino (fixa: USD):", bg="#f0f2f5").pack()
 tk.Label(app, text="USD", bg="#f0f2f5", font=("Arial", 10, "bold")).pack()
 
-# Valor a converter
 tk.Label(app, text="Valor:", bg="#f0f2f5").pack()
 entrada_valor = ttk.Entry(app)
 entrada_valor.pack()
 
-# Botão de conversão
 tk.Button(app, text="Converter", command=converter).pack(pady=10)
 
-# Resultado da conversão
 resultado_var = tk.StringVar()
 tk.Label(app, textvariable=resultado_var, font=("Arial", 12, "bold"), bg="#f0f2f5").pack()
 
-# Hora da última atualização
 if timestamp:
     dt = datetime.fromtimestamp(timestamp)
     tk.Label(app, text=f"🕒 Atualizado em: {dt.strftime('%d/%m/%Y %H:%M:%S')}", bg="#f0f2f5").pack()
 
-# Lista de todas as cotações disponíveis
 tk.Label(app, text="\nCotações atuais (base: USD):", bg="#f0f2f5", font=("Arial", 10, "bold")).pack()
 frame_lista = tk.Frame(app, bg="#ffffff", relief=tk.SUNKEN, borderwidth=1)
 frame_lista.pack(padx=10, pady=5, fill="both", expand=True)
